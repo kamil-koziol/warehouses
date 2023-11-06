@@ -18,3 +18,6 @@ for day in range(SIMULATION_DAYS):
 
     # terminarz uzupelnienie
 
+
+car = db.Samochod.get_random()
+print(car)

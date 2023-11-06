@@ -19,7 +19,10 @@ class Instruktor(Base):
     poczatek_pracy = Column(Integer)
     data_urodzenia = Column(Date)
     data_zatrudnienia = Column(Date)
+    data_zwolnienia = Column(Date)
     plec = Column(Boolean)
+
+    is_finishing_work = False
 
     @staticmethod
     def get_random(now):

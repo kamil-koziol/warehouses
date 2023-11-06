@@ -1,4 +1,6 @@
 from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey
+
+import simulation_properties
 from db import Base
 
 class Kurs(Base):
@@ -9,3 +11,4 @@ class Kurs(Base):
     ko_instruktor_id = Column(Integer, ForeignKey('instruktor.id'))
     data_rozpoczecia = Column(Date)
     data_zakonczenia = Column(Date, nullable=True)
+    hours_remaining = simulation_properties.HOURS_IN_COURSE
