@@ -1,5 +1,13 @@
+import random
+
 from sqlalchemy import Column, Integer, String, Date, Boolean
+
+import utils
 from db import Base
+from person_generator import get_rand_name
+from utils import *
+from simulation_properties import *
+
 
 class Instruktor(Base):
     __tablename__ = 'instruktor'
@@ -12,3 +20,16 @@ class Instruktor(Base):
     data_urodzenia = Column(Date)
     data_zatrudnienia = Column(Date)
     plec = Column(Boolean)
+
+    def random(self, now):
+        birth_date = get_rand_date_between_years(DATE_FROM.year - 22, DATE_FROM.year - 60)
+
+        ins = Instruktor()
+        is_male = random.choice([True, False])
+        ins.imie, ins.nazwisko = get_rand_name(is_male)
+        ins.plec = is_male
+        ins.data_urodzenia = birth_date
+        ins.poczatek_pracy = random.randint(birth_date.year + 22, DATE_FROM.year)
+        ins.data_zatrudnienia = now
+        ins.pesel = generate_pesel(birth_date)
+        return ins
