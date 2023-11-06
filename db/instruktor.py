@@ -21,8 +21,9 @@ class Instruktor(Base):
     data_zatrudnienia = Column(Date)
     plec = Column(Boolean)
 
-    def random(self, now):
-        birth_date = get_rand_date_between_years(DATE_FROM.year - 22, DATE_FROM.year - 60)
+    @staticmethod
+    def get_random(now):
+        birth_date = get_rand_date_between_years(DATE_FROM.year - 40, DATE_FROM.year - 22)
 
         ins = Instruktor()
         is_male = random.choice([True, False])

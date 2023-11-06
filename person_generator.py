@@ -1,7 +1,4 @@
 import random
-from sqlalchemy import Date
-from db import Instruktor
-
 
 instructor_index = 0
 student_index = 0
