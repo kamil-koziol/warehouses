@@ -1,11 +1,21 @@
-import pandas as pd
 import random
 
-names_df = pd.read_csv('Osoby/imi')
-surename_df = pd.read_csv('nazwiska.csv')
 
-rand_name = random.choice(names_df['Imię'])
-rand_surename = random.choice(surename_df['Nazwisko'])
+def read_from_file(filepath: str):
+    data = []
+    with open(filepath, "r") as f:
+        for line in f:
+            data.append(line.strip())
+    return data
 
-print("imię:", rand_name)
-print("nazwisko:", rand_name)
+
+m_names = read_from_file('data/imiona_meskie.csv')
+m_surname = read_from_file('data/nazwiska_meskie.csv')
+f_names = read_from_file('data/imiona_zenskie.csv')
+f_surname = read_from_file('data/nazwiska_zenskie.csv')
+
+def get_rand_name(male: bool):
+    if male:
+        return random.choice(m_names), random.choice(m_surname)
+    else:
+        return random.choice(f_names), random.choice(f_surname)
