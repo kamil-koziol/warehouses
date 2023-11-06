@@ -6,3 +6,4 @@ db.session.add(ed_samochod)
 cars = db.session.query(db.Samochod).all()
 for car in cars:
     print(car)
+
