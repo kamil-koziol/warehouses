@@ -3,6 +3,7 @@ from typing import List, NamedTuple
 from events import SimulationEvent
 from sqlalchemy.orm import Session
 from datetime import datetime
+from concurrent.futures import ThreadPoolExecutor
 
 class EventProbability(NamedTuple):
     event: SimulationEvent
@@ -18,6 +19,10 @@ class EventRegistry:
         self.events.append(EventProbability(event, probability))
 
     def fire_events(self, session: Session, day: datetime):
-        for event in self.events:
+
+        def thread_worker(event: EventProbability):
             if random.random() < event.probability:
                 event.event.run(session, day)
+
+        with ThreadPoolExecutor(max_workers=8) as executor:
+            executor.map(thread_worker, self.events)

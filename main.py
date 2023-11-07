@@ -5,6 +5,7 @@ from simulation_properties import DATE_FROM, DATE_TO, MAX_AMOUNT_OF_INSTRUCTORS,
 from datetime import datetime, timedelta
 from events import EventRegistry
 from sqlalchemy.orm.session import Session
+import time
 
 event_registry = EventRegistry()
 event_registry.add_event(SampleEvent, 0.00)
@@ -36,13 +37,14 @@ initial_fill(db.session)
 
 SIMULATION_DAYS =  (DATE_TO - DATE_FROM).days
 
+full_simulation_time = 0.0
+
 for day in range(SIMULATION_DAYS):
+    t1_start = time.perf_counter()
     current_day = DATE_FROM + timedelta(days=day)
 
     # run events for this day
     event_registry.fire_events(db.session, current_day)
-
-    # run special events
 
     # terminarz uzupelnienie
     instructors = db.session.query(db.Instruktor).all()
@@ -56,7 +58,7 @@ for day in range(SIMULATION_DAYS):
 
         terminarz = []
 
-        remaining_hours = 8
+        remaining_hours = random.randint(6, 8)
         for kurs in instructors_kursy:
             # check if student can drive now
 
@@ -83,7 +85,6 @@ for day in range(SIMULATION_DAYS):
                 break
 
 
-        # generate zajecia from terminarz
         # todo: co jesli nie 8 godzin? sie nie odbyly
 
         staring_hour = random.randint(8, 14)
@@ -97,9 +98,13 @@ for day in range(SIMULATION_DAYS):
             zajecia.sie_odbyly = True
             zajecia.koniec = current_time + timedelta(hours=drive_hours)
             current_time += timedelta(hours=drive_hours)
+
             db.session.add(zajecia)
-
-    print(day)
+        
     db.session.commit()
+    t2_end = time.perf_counter()
+    print(f"Day {day:04}, time: {t2_end - t1_start:0.4f} ms")
+    full_simulation_time += t2_end - t1_start
 
+print(f"Full simulation time: {full_simulation_time:0.4f} ms")
 db.session.close()
