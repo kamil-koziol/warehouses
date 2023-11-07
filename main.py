@@ -3,11 +3,15 @@ import db
 import random
 from simulation_properties import DATE_FROM, DATE_TO, MAX_AMOUNT_OF_INSTRUCTORS, MAX_AMOUNT_OF_STUDENTS
 from datetime import datetime, timedelta
-from events import EventRegistry
+from events import *
 from sqlalchemy.orm.session import Session
 
 event_registry = EventRegistry()
 event_registry.add_event(SampleEvent, 0.00)
+event_registry.add_event(FiredEvent, 1.0 / 150.0)
+event_registry.add_event(NewStudentEvent, 0.3)
+event_registry.add_event(NewInstructorEvent, 1.0 / 30.0)
+
 
 def initial_fill(s: Session):
     for _ in range(MAX_AMOUNT_OF_INSTRUCTORS):
@@ -15,15 +19,13 @@ def initial_fill(s: Session):
         s.add(car)
 
     AVG_PER_INSTRUCTOR = MAX_AMOUNT_OF_STUDENTS // MAX_AMOUNT_OF_INSTRUCTORS
-    for i in range(MAX_AMOUNT_OF_INSTRUCTORS//2):
+    for i in range(MAX_AMOUNT_OF_INSTRUCTORS // 2):
         instructor = db.Instruktor.get_random(DATE_FROM)
         s.add(instructor)
-
 
         for j in range(random.randint(0, AVG_PER_INSTRUCTOR)):
             student = db.Krusant.get_random(DATE_FROM)
             s.add(student)
-
 
             kurs = db.Kurs(data_rozpoczecia=DATE_FROM)
             kurs.ko_kursant_id = student.id
@@ -32,9 +34,10 @@ def initial_fill(s: Session):
             s.add(kurs)
     s.commit()
 
+
 initial_fill(db.session)
 
-SIMULATION_DAYS =  (DATE_TO - DATE_FROM).days
+SIMULATION_DAYS = (DATE_TO - DATE_FROM).days
 
 for day in range(SIMULATION_DAYS):
     current_day = DATE_FROM + timedelta(days=day)
@@ -51,6 +54,7 @@ for day in range(SIMULATION_DAYS):
 
     for instructor in instructors:
         # checks for instructor
+
         instructors_kursy = db.session.query(db.Kurs).filter(db.Kurs.ko_instruktor_id == instructor.id).all()
         random.shuffle(instructors_kursy)
 
@@ -61,27 +65,25 @@ for day in range(SIMULATION_DAYS):
             # check if student can drive now
 
             # drive hours
-            drive_hours = random.choices([1,2,3, 4], [1,4,2, 1])[0]
+            drive_hours = random.choices([1, 2, 3, 4], [1, 4, 2, 1])[0]
 
-            if(remaining_hours < drive_hours):
+            if (remaining_hours < drive_hours):
                 drive_hours = remaining_hours
 
-            if(kurs.hours_remaining < drive_hours):
+            if (kurs.hours_remaining < drive_hours):
                 drive_hours = kurs.hours_remaining
 
             remaining_hours -= drive_hours
             kurs.hours_remaining -= drive_hours
 
             if kurs.hours_remaining == 0:
-                # ended kurs
+                kurs.finish_course(db.session, current_day)
                 pass
 
-            
             terminarz.append((kurs, drive_hours))
 
             if remaining_hours == 0:
                 break
-
 
         # generate zajecia from terminarz
         # todo: co jesli nie 8 godzin? sie nie odbyly
