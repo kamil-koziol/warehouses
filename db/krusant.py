@@ -18,6 +18,8 @@ class Krusant(Base):
     data_urodzenia = Column(Date)
     plec = Column(Boolean)
 
+    def to_string(self):
+        return self.imie+" "+self.nazwisko
     @staticmethod
     def get_random(now: datetime):
         birth_date = get_rand_date_between_years(now.year - STUDENT_AGE_MAX, now.year - STUDENT_AGE_MIN)

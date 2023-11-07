@@ -8,6 +8,7 @@ from utils import *
 from simulation_properties import *
 from dataclasses import dataclass
 
+
 @dataclass
 class Instruktor(Base):
     __tablename__ = 'instruktor'
@@ -24,9 +25,13 @@ class Instruktor(Base):
 
     number_of_active_courses = 0
 
+    def to_string(self):
+        return self.imie + " " + self.nazwisko + " " + str(self.number_of_active_courses)
+
     @staticmethod
     def get_random(now):
-        birth_date = get_rand_date_between_years(DATE_FROM.year - INSTRUCTOR_AGE_MAX, DATE_FROM.year - INSTRUCTOR_AGE_MIN)
+        birth_date = get_rand_date_between_years(DATE_FROM.year - INSTRUCTOR_AGE_MAX,
+                                                 DATE_FROM.year - INSTRUCTOR_AGE_MIN)
 
         ins = Instruktor()
         ins.id = uuid.uuid4()

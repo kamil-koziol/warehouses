@@ -12,7 +12,8 @@ from datetime import datetime
 
 
 def get_instructor_with_less_hrs(session):
-    for ins in sorted(session.query(Instruktor).all(),key=lambda x: x.number_of_active_courses):
+    instructors = session.query(Instruktor).all()
+    for ins in sorted(instructors, key=lambda x: x.number_of_active_courses):
         if ins.data_zwolnienia != null:
             return ins
 
@@ -31,3 +32,5 @@ class NewStudentEvent(SimulationEvent):
             instructor.number_of_active_courses += 1
             session.add(new_student)
             session.add(kurs)
+            if DEBUG_MODE:
+                print("Dodano kursanta:" + new_student.to_string() + " do instruktora:" + instructor.to_string())
