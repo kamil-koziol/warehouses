@@ -27,7 +27,7 @@ class Instruktor(Base):
 
     @staticmethod
     def get_random(now):
-        birth_date = get_rand_date_between_years(DATE_FROM.year - 40, DATE_FROM.year - 22)
+        birth_date = get_rand_date_between_years(DATE_FROM.year - INSTRUCTOR_AGE_MAX, DATE_FROM.year - INSTRUCTOR_AGE_MIN)
 
         ins = Instruktor()
         is_male = random.choice([True, False])
@@ -36,7 +36,7 @@ class Instruktor(Base):
         ins.nazwisko = rand_name[1]["Nazwisko"]
         ins.plec = is_male
         ins.data_urodzenia = birth_date
-        ins.poczatek_pracy = random.randint(birth_date.year + 22, DATE_FROM.year)
+        ins.poczatek_pracy = random.randint(birth_date.year + INSTRUCTOR_YEARS_EXPERIENCE_MAX, DATE_FROM.year)
         ins.data_zatrudnienia = now
         ins.pesel = generate_pesel(birth_date)
         return ins
