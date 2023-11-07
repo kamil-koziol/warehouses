@@ -12,7 +12,7 @@ from datetime import datetime
 
 
 def get_instructor_with_less_hrs(session):
-    for ins in session.query(Instruktor).all().sorted(key=lambda x: x.number_of_active_courses):
+    for ins in sorted(session.query(Instruktor).all(),key=lambda x: x.number_of_active_courses):
         if ins.data_zwolnienia != null:
             return ins
 
@@ -24,7 +24,8 @@ class NewStudentEvent(SimulationEvent):
             instructor = get_instructor_with_less_hrs(session)
             new_student = Krusant.get_random(day)
 
-            kurs = Kurs(day)
+            kurs = Kurs()
+            kurs.data_rozpoczecia = day
             kurs.ko_kursant_id = new_student.id
             kurs.ko_instruktor_id = instructor.id
             instructor.number_of_active_courses += 1

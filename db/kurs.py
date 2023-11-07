@@ -17,3 +17,6 @@ class Kurs(Base):
     data_zakonczenia = Column(Date, nullable=True)
 
     hours_remaining = simulation_properties.HOURS_IN_COURSE
+
+    def finish_course(selfself,session):
+        pass
