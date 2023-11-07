@@ -1,4 +1,6 @@
-from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey, DateTime
+import uuid
+
+from sqlalchemy import Column, Boolean, ForeignKey, DateTime, Uuid
 from db import Base
 from dataclasses import dataclass
 
@@ -6,9 +8,9 @@ from dataclasses import dataclass
 class Zajecia(Base):
     __tablename__ = 'zajecia'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    ko_kurs_id = Column(Integer, ForeignKey('kurs.id'))
-    ko_samochod_id = Column(Integer, ForeignKey('samochod.id'))
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
+    ko_kurs_id = Column(Uuid, ForeignKey('kurs.id'))
+    ko_samochod_id = Column(Uuid, ForeignKey('samochod.id'))
     poczatek = Column(DateTime)
     koniec = Column(DateTime)
     sie_odbyly = Column(Boolean)

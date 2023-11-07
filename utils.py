@@ -60,6 +60,6 @@ f_surname = read_from_file('data/nazwiska_zenskie.csv')
 
 def get_rand_name(male: bool):
     if male:
-        return random.choice(m_names), random.choice(m_surname)
+        return random.choice(m_names)['Imie'], random.choice(m_surname)['Nazwisko']
     else:
-        return random.choice(f_names), random.choice(f_surname)
+        return random.choice(f_names)['Imie'], random.choice(f_surname)['Nazwisko']

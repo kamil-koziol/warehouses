@@ -1,8 +1,9 @@
 import random
+import uuid
+from uuid import uuid4
 
-from sqlalchemy import Column, Integer, String, Date, Boolean
+from sqlalchemy import Column, Integer, String, Date, Boolean, Uuid
 from db import Base
-from person_generator import get_rand_name
 from simulation_properties import *
 from utils import *
 
@@ -10,7 +11,7 @@ from utils import *
 class Krusant(Base):
     __tablename__ = 'krusant'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
     imie = Column(String(20))
     nazwisko = Column(String(30))
     pesel = Column(String(11))

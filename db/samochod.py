@@ -1,4 +1,6 @@
-from sqlalchemy import Column, Integer, String, Date, Boolean
+import uuid
+
+from sqlalchemy import Column, Integer, String,Uuid
 from db import Base
 from utils import *
 from simulation_properties import *
@@ -11,7 +13,7 @@ from dataclasses import dataclass
 class Samochod(Base):
     __tablename__ = 'samochod'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
     marka = Column(String(20))
     rok_produkcji = Column(Integer)
     model = Column(String(30))

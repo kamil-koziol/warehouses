@@ -15,18 +15,18 @@ def initial_fill(s: Session):
     for i in range(MAX_AMOUNT_OF_INSTRUCTORS//2):
         instructor = db.Instruktor.get_random(DATE_FROM)
         s.add(instructor)
-        s.commit()
+
 
         for j in range(random.randint(0, AVG_PER_INSTRUCTOR)):
             student = db.Krusant.get_random(DATE_FROM)
             s.add(student)
-            s.commit()
+
 
             kurs = db.Kurs(data_rozpoczecia=DATE_FROM)
             kurs.ko_kursant_id = student.id
             kurs.ko_instruktor_id = instructor.id
             s.add(kurs)
-            s.commit()
+    s.commit()
 
 initial_fill(db.session)
 

@@ -1,10 +1,8 @@
-import random
+import uuid
 
-from sqlalchemy import Column, Integer, String, Date, Boolean
+from sqlalchemy import Column, Integer, String, Date, Boolean, Uuid
 
-import utils
 from db import Base
-from person_generator import get_rand_name
 from utils import *
 from simulation_properties import *
 from dataclasses import dataclass
@@ -13,7 +11,7 @@ from dataclasses import dataclass
 class Instruktor(Base):
     __tablename__ = 'instruktor'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
     imie = Column(String(20))
     nazwisko = Column(String(30))
     pesel = Column(String(11))
@@ -32,8 +30,8 @@ class Instruktor(Base):
         ins = Instruktor()
         is_male = random.choice([True, False])
         rand_name = get_rand_name(is_male)
-        ins.imie = rand_name[0]["Imie"]
-        ins.nazwisko = rand_name[1]["Nazwisko"]
+        ins.imie = rand_name[0]
+        ins.nazwisko = rand_name[1]
         ins.plec = is_male
         ins.data_urodzenia = birth_date
         ins.poczatek_pracy = random.randint(birth_date.year + INSTRUCTOR_YEARS_EXPERIENCE_MAX, DATE_FROM.year)
