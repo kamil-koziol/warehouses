@@ -47,7 +47,7 @@ for day in range(SIMULATION_DAYS):
     current_day = DATE_FROM + timedelta(days=day)
 
     # run events for this day
-    event_registry.fire_events(db.session, current_day)
+    # event_registry.fire_events(db.session, current_day)
 
     # run special events
 
@@ -82,7 +82,6 @@ for day in range(SIMULATION_DAYS):
 
             if kurs.hours_remaining == 0:
                 kurs.finish_course(db.session, current_day)
-                pass
 
             terminarz.append((kurs, drive_hours))
 

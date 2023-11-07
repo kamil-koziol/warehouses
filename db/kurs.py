@@ -8,7 +8,6 @@ from db import Base, Instruktor, Krusant
 from dataclasses import dataclass
 
 
-@dataclass
 class Kurs(Base):
     __tablename__ = 'kurs'
 
@@ -17,9 +16,7 @@ class Kurs(Base):
     ko_instruktor_id = Column(Uuid, ForeignKey('instruktor.id'))
     data_rozpoczecia = Column(Date)
     data_zakonczenia = Column(Date, nullable=True)
-
-    hours_remaining = simulation_properties.HOURS_IN_COURSE
-
+    hours_remaining = Column(Integer, default=simulation_properties.HOURS_IN_COURSE)
 
     def finish_course(self, session:Session, day):
         self.data_zakonczenia = day
