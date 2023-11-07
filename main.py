@@ -1,3 +1,4 @@
+from db.kurs import print_csv
 from events import SampleEvent
 import db
 import random
@@ -47,7 +48,7 @@ for day in range(SIMULATION_DAYS):
     current_day = DATE_FROM + timedelta(days=day)
 
     # run events for this day
-    # event_registry.fire_events(db.session, current_day)
+    event_registry.fire_events(db.session, current_day)
 
     # run special events
 
@@ -82,6 +83,7 @@ for day in range(SIMULATION_DAYS):
 
             if kurs.hours_remaining == 0:
                 kurs.finish_course(db.session, current_day)
+                pass
 
             terminarz.append((kurs, drive_hours))
 
@@ -112,4 +114,6 @@ for day in range(SIMULATION_DAYS):
     full_simulation_time += t2_end - t1_start
 
 print(f"Full simulation time: {full_simulation_time:0.4f} ms")
+print_csv("WORD.csv")
+
 db.session.close()
