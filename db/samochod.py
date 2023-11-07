@@ -23,4 +23,5 @@ class Samochod(Base):
         car = Samochod()
         rc = random.choice(cars)
         car.marka, car.model, car.rok_produkcji = rc["Marka"], rc["Model"], DATE_FROM.year - datetime.now().year + int(rc["Rok"])
+        car.id = uuid.uuid4()
         return car

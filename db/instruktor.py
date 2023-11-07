@@ -1,6 +1,7 @@
 import uuid
 
 from sqlalchemy import Column, Integer, String, Date, Boolean, Uuid
+from sqlalchemy.orm import relationship
 
 from db import Base
 from utils import *
@@ -28,6 +29,7 @@ class Instruktor(Base):
         birth_date = get_rand_date_between_years(DATE_FROM.year - INSTRUCTOR_AGE_MAX, DATE_FROM.year - INSTRUCTOR_AGE_MIN)
 
         ins = Instruktor()
+        ins.id = uuid.uuid4()
         is_male = random.choice([True, False])
         rand_name = get_rand_name(is_male)
         ins.imie = rand_name[0]

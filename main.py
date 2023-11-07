@@ -30,8 +30,6 @@ def initial_fill(s: Session):
 
 initial_fill(db.session)
 
-kursy = db.session.query(db.Kurs).all()
-
 SIMULATION_DAYS =  (DATE_TO - DATE_FROM).days
 
 for day in range(SIMULATION_DAYS):
@@ -44,16 +42,59 @@ for day in range(SIMULATION_DAYS):
 
     # terminarz uzupelnienie
     instructors = db.session.query(db.Instruktor).all()
+
+    # todo: multithreaded instructors
+
     for instructor in instructors:
-        free_hours = [0 for i in range(24)]
         # checks for instructor
         instructors_kursy = db.session.query(db.Kurs).filter(db.Kurs.ko_instruktor_id == instructor.id).all()
-        # print(instructors_kursy)
-        students = [db.session.query(db.Krusant).filter_by(id=kurs.ko_kursant_id).first() for kurs in instructors_kursy]
+        random.shuffle(instructors_kursy)
 
-        # print(students)
-        
-        pass
+        terminarz = []
 
+        remaining_hours = 8
+        for kurs in instructors_kursy:
+            # check if student can drive now
+
+            # drive hours
+            drive_hours = random.choices([1,2,3, 4], [1,4,2, 1])[0]
+
+            if(remaining_hours < drive_hours):
+                drive_hours = remaining_hours
+
+            if(kurs.hours_remaining < drive_hours):
+                drive_hours = kurs.hours_remaining
+
+            remaining_hours -= drive_hours
+            kurs.hours_remaining -= drive_hours
+
+            if kurs.hours_remaining == 0:
+                # ended kurs
+                pass
+
+            
+            terminarz.append((kurs, drive_hours))
+
+            if remaining_hours == 0:
+                break
+
+
+        # generate zajecia from terminarz
+        # todo: co jesli nie 8 godzin? sie nie odbyly
+
+        staring_hour = random.randint(8, 14)
+        current_time = current_day + timedelta(hours=staring_hour)
+
+        for kurs, drive_hours in terminarz:
+            zajecia = db.Zajecia()
+            zajecia.poczatek = current_time
+            zajecia.ko_kurs_id = kurs.id
+            zajecia.ilosc_godzin = drive_hours
+            zajecia.sie_odbyly = True
+            zajecia.koniec = current_time + timedelta(hours=drive_hours)
+            current_time += timedelta(hours=drive_hours)
+            db.session.add(zajecia)
+
+    db.session.commit()
 
 db.session.close()

@@ -25,6 +25,7 @@ class Krusant(Base):
         student = Krusant()
         is_male = random.choice([True, False])
         student.imie, student.nazwisko = get_rand_name(is_male)
+        student.id = uuid4()
         student.plec = is_male
         student.data_urodzenia = birth_date
         student.pesel = generate_pesel(birth_date)
