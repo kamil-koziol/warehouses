@@ -5,11 +5,13 @@ from simulation_properties import *
 
 cars = read_from_file('data/samochody.csv')
 
+from dataclasses import dataclass
 
+@dataclass
 class Samochod(Base):
     __tablename__ = 'samochod'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     marka = Column(String(20))
     rok_produkcji = Column(Integer)
     model = Column(String(30))

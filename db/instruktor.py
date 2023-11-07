@@ -7,12 +7,13 @@ from db import Base
 from person_generator import get_rand_name
 from utils import *
 from simulation_properties import *
+from dataclasses import dataclass
 
-
+@dataclass
 class Instruktor(Base):
     __tablename__ = 'instruktor'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     imie = Column(String(20))
     nazwisko = Column(String(30))
     pesel = Column(String(11))
