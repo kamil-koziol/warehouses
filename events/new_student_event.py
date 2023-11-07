@@ -4,6 +4,7 @@ from typing import List
 from sqlalchemy import null
 
 from db import *
+from db.scripts import *
 from simulation_properties import *
 from .simulation_event import SimulationEvent
 from sqlalchemy.orm import Session
@@ -11,13 +12,15 @@ from datetime import datetime
 
 
 def get_instructor_with_less_hrs(session):
-    return session.query(Instruktor).all().sort(key=lambda x: x.number_of_active_courses)[0]
+    for ins in session.query(Instruktor).all().sorted(key=lambda x: x.number_of_active_courses):
+        if ins.data_zwolnienia != null:
+            return ins
 
 
 class NewStudentEvent(SimulationEvent):
     @staticmethod
     def run(session: Session, day: datetime):
-        if len(session.query(Krusant).all()) < MAX_AMOUNT_OF_STUDENTS:
+        if get_number_of_active_courses(session) < MAX_AMOUNT_OF_STUDENTS:
             instructor = get_instructor_with_less_hrs(session)
             new_student = Krusant.get_random(day)
 

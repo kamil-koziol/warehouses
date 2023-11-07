@@ -10,6 +10,10 @@ event_registry = EventRegistry()
 event_registry.add_event(SampleEvent, 0.00)
 
 def initial_fill(s: Session):
+    for _ in range(MAX_AMOUNT_OF_INSTRUCTORS):
+        car = db.Samochod.get_random()
+        s.add(car)
+
     AVG_PER_INSTRUCTOR = MAX_AMOUNT_OF_STUDENTS // MAX_AMOUNT_OF_INSTRUCTORS
     for i in range(MAX_AMOUNT_OF_INSTRUCTORS//2):
         instructor = db.Instruktor.get_random(DATE_FROM)
