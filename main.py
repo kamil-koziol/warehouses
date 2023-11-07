@@ -1,9 +1,13 @@
-from _datetime import datetime
-from simulation_properties import DATE_FROM, DATE_TO, AMOUNT_OF_INSTRUCTORS, AMOUNT_OF_CARS, AMOUNT_OF_STUDENTS
 from events import SampleEvent
 import random
 import db
+import random
 
+from simulation_properties import DATE_FROM, DATE_TO, MAX_AMOUNT_OF_INSTRUCTORS
+
+
+for i in range(MAX_AMOUNT_OF_INSTRUCTORS):
+    db.session.add(db.Instruktor.get_random(DATE_FROM))
 
 SIMULATION_DAYS =  (DATE_TO - DATE_FROM).days
 
@@ -21,3 +25,5 @@ for day in range(SIMULATION_DAYS):
 
 car = db.Samochod.get_random()
 print(car)
+
+db.session.close()

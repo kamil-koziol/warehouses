@@ -19,7 +19,7 @@ class Instruktor(Base):
     poczatek_pracy = Column(Integer)
     data_urodzenia = Column(Date)
     data_zatrudnienia = Column(Date)
-    data_zwolnienia = Column(Date)
+    data_zwolnienia = Column(Date, nullable=True)
     plec = Column(Boolean)
 
     is_finishing_work = False
@@ -30,7 +30,9 @@ class Instruktor(Base):
 
         ins = Instruktor()
         is_male = random.choice([True, False])
-        ins.imie, ins.nazwisko = get_rand_name(is_male)
+        rand_name = get_rand_name(is_male)
+        ins.imie = rand_name[0]["Imie"]
+        ins.nazwisko = rand_name[1]["Nazwisko"]
         ins.plec = is_male
         ins.data_urodzenia = birth_date
         ins.poczatek_pracy = random.randint(birth_date.year + 22, DATE_FROM.year)

@@ -1,0 +1,6 @@
+name: warehouses
+channels:
+  - defaults
+dependencies:
+  - sqlalchemy=2.0.21
+  - python=3.11.5
