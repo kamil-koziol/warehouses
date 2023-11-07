@@ -22,8 +22,7 @@ class Instruktor(Base):
     data_zatrudnienia = Column(Date)
     data_zwolnienia = Column(Date, nullable=True)
     plec = Column(Boolean)
-
-    number_of_active_courses = 0
+    number_of_active_courses = Column(Integer)
 
     def to_string(self):
         return self.imie + " " + self.nazwisko + " " + str(self.number_of_active_courses)
@@ -37,6 +36,7 @@ class Instruktor(Base):
         ins.id = uuid.uuid4()
         is_male = random.choice([True, False])
         rand_name = get_rand_name(is_male)
+        ins.number_of_active_courses = 0
         ins.imie = rand_name[0]
         ins.nazwisko = rand_name[1]
         ins.plec = is_male

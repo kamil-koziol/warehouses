@@ -68,7 +68,7 @@ class Kurs(Base):
         ins.number_of_active_courses -= 1
         c = session.query(Krusant).get(self.ko_kursant_id)
 
-        if simulation_properties.DEBUG_MODE:
+        if simulation_properties.VERBOSE:
             print(c.to_string() + " zakończył kurs")
 
         simulate_exam(day, c)

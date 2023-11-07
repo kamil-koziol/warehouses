@@ -12,5 +12,5 @@ class NewInstructorEvent(SimulationEvent):
         if get_number_of_active_instructors(session) < MAX_AMOUNT_OF_INSTRUCTORS:
             instructor = Instruktor.get_random(day)
             session.add(instructor)
-            if DEBUG_MODE:
+            if VERBOSE:
                 print("Dodano instruktora:" + instructor.to_string())

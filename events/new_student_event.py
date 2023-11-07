@@ -32,5 +32,5 @@ class NewStudentEvent(SimulationEvent):
             instructor.number_of_active_courses += 1
             session.add(new_student)
             session.add(kurs)
-            if DEBUG_MODE:
+            if VERBOSE:
                 print("Dodano kursanta:" + new_student.to_string() + " do instruktora:" + instructor.to_string())

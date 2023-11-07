@@ -1,14 +1,14 @@
 from datetime import datetime
 
-DEBUG_MODE: bool = True
+VERBOSE: bool = False
 
-DATE_FROM: datetime = datetime(2023, 11, 6)
-DATE_TO: datetime = datetime(2025, 11, 6)
+DATE_FROM: datetime = datetime(2023, 1, 1)
+DATE_TO: datetime = datetime(2023, 6, 1)
 
-HOURS_IN_COURSE = 5
-MAX_AMOUNT_OF_INSTRUCTORS: int = 10
-AMOUNT_OF_CARS: int = 20
-MAX_AMOUNT_OF_STUDENTS: int = 20
+HOURS_IN_COURSE = 30
+MAX_AMOUNT_OF_INSTRUCTORS: int = 500
+AMOUNT_OF_CARS: int = 500
+MAX_AMOUNT_OF_STUDENTS: int = 10000
 
 STUDENT_AGE_MIN = 18
 STUDENT_AGE_MAX = 30
