@@ -1,0 +1,29 @@
+import random
+from typing import List
+
+from sqlalchemy import null
+
+from db import *
+from simulation_properties import *
+from .simulation_event import SimulationEvent
+from sqlalchemy.orm import Session
+from datetime import datetime
+
+
+def get_instructor_with_less_hrs(session):
+    return session.query(Instruktor).all().sort(key=lambda x: x.number_of_active_courses)[0]
+
+
+class NewStudentEvent(SimulationEvent):
+    @staticmethod
+    def run(session: Session, day: datetime):
+        if len(session.query(Krusant).all()) < MAX_AMOUNT_OF_STUDENTS:
+            instructor = get_instructor_with_less_hrs(session)
+            new_student = Krusant.get_random(day)
+
+            kurs = Kurs(day)
+            kurs.ko_kursant_id = new_student.id
+            kurs.ko_instruktor_id = instructor.id
+            instructor.number_of_active_courses += 1
+            session.add(new_student)
+            session.add(kurs)

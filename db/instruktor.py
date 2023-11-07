@@ -21,7 +21,7 @@ class Instruktor(Base):
     data_zwolnienia = Column(Date, nullable=True)
     plec = Column(Boolean)
 
-    is_finishing_work = False
+    number_of_active_courses = 0
 
     @staticmethod
     def get_random(now):

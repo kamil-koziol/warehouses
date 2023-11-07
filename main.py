@@ -1,5 +1,4 @@
 from events import SampleEvent
-import random
 import db
 import random
 from simulation_properties import DATE_FROM, DATE_TO, MAX_AMOUNT_OF_INSTRUCTORS, MAX_AMOUNT_OF_STUDENTS
@@ -25,6 +24,7 @@ def initial_fill(s: Session):
             kurs = db.Kurs(data_rozpoczecia=DATE_FROM)
             kurs.ko_kursant_id = student.id
             kurs.ko_instruktor_id = instructor.id
+            instructor.number_of_active_courses += 1
             s.add(kurs)
     s.commit()
 
@@ -52,7 +52,7 @@ for day in range(SIMULATION_DAYS):
         students = [db.session.query(db.Krusant).filter_by(id=kurs.ko_kursant_id).first() for kurs in instructors_kursy]
 
         # print(students)
-        
+
         pass
 
 
