@@ -8,7 +8,7 @@ from db.kurs import print_csv
 from events import SampleEvent
 import db
 from simulation_properties import DATE_FROM, DATE_TO, MAX_AMOUNT_OF_INSTRUCTORS, MAX_AMOUNT_OF_STUDENTS, VERBOSE, \
-    AMOUNT_OF_CARS
+    AMOUNT_OF_CARS, PERF
 from datetime import datetime, timedelta
 from events import *
 from sqlalchemy.orm.session import Session
@@ -45,7 +45,7 @@ def initial_fill(s: Session):
 initial_fill(db.session)
 
 SIMULATION_DAYS = (DATE_TO - DATE_FROM).days
-
+zajecia_counter = 0
 full_simulation_time = 0.0
 cars = db.session.query(db.Samochod).all()
 
@@ -118,24 +118,41 @@ for day in range(SIMULATION_DAYS):
             current_time += timedelta(hours=drive_hours)
 
             db.session.add(zajecia)
+            zajecia_counter += 1
 
+        
     if day%10==0:
         print(str(day*100/SIMULATION_DAYS) +" %")
 
     if day == SIMULATION_DAYS//5:
-        shutil.copy("db.sqlite", "dumps/small_dump.sqlite")
+        db.session.commit()
+        db.session.close()
+
+        # time.sleep(5)
+        os.system("sqlite3 db.sqlite .dump > dumps/1.sql")
+
+        print(zajecia_counter)
+
+
+        db.session = db.Session()
+        cars = db.session.query(db.Samochod).all()
+
+    db.session.commit()
 
     t2_end = time.perf_counter()
     full_simulation_time += t2_end - t1_start
-    if VERBOSE:
+    if PERF:
         print(day)
         print(f"Day {day:04}, time: {t2_end - t1_start:0.4f} ms")
-
-    db.session.commit()
 
 print(f"Full simulation time: {full_simulation_time:0.4f} ms")
 print_csv("dumps/WORD.csv")
 
+
+db.session.flush()
+db.session.commit()
 db.session.close()
-shutil.copy("db.sqlite", "dumps/big_dump.sqlite")
-os.remove("db.sqlite")
+
+print(zajecia_counter)
+
+os.system("sqlite3 db.sqlite .dump > dumps/big_dump.sql")
