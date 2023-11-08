@@ -128,7 +128,7 @@ for day in range(SIMULATION_DAYS):
         db.session.close()
 
         # time.sleep(5)
-        os.system("sqlite3 db.sqlite .dump > dumps/1.sql")
+        os.system("sqlite3 db.sqlite .dump > dumps/small_dump.sql")
 
         print(zajecia_counter)
 
