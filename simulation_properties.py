@@ -1,9 +1,11 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 VERBOSE: bool = False
+PERF: bool = False
 
 DATE_FROM: datetime = datetime(2023, 1, 1)
-DATE_TO: datetime = datetime(2023, 6, 1)
+TOTAL_DAYS = 100
+DATE_TO: datetime = DATE_FROM + timedelta(days=TOTAL_DAYS)
 
 HOURS_IN_COURSE = 30
 MAX_AMOUNT_OF_INSTRUCTORS: int = 500

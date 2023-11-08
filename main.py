@@ -119,9 +119,8 @@ for day in range(SIMULATION_DAYS):
 
             db.session.add(zajecia)
             zajecia_counter += 1
-
-        
-    if day%10==0:
+ 
+    if day % (SIMULATION_DAYS//(100.0/1.0)) == 0:
         print(str(day*100/SIMULATION_DAYS) +" %")
 
     if day == SIMULATION_DAYS//5:
@@ -156,3 +155,4 @@ db.session.close()
 print(zajecia_counter)
 
 os.system("sqlite3 db.sqlite .dump > dumps/big_dump.sql")
+os.system("sqlite3 db.sqlite .schema > dumps/schema.sql")
